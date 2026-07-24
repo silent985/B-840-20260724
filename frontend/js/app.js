@@ -18,6 +18,72 @@ async function apiRequest(endpoint, options = {}) {
     return data;
 }
 
+async function createStudySession(sessionId, totalWords) {
+    return apiRequest('/study/session', {
+        method: 'POST',
+        body: JSON.stringify({ session_id: sessionId, total_words: totalWords }),
+    });
+}
+
+async function saveStudyRecord(sessionId, wordId, isCorrect) {
+    return apiRequest('/study/record', {
+        method: 'POST',
+        body: JSON.stringify({ session_id: sessionId, word_id: wordId, is_correct: isCorrect }),
+    });
+}
+
+async function completeStudySession(sessionId) {
+    return apiRequest(`/study/session/${sessionId}`, {
+        method: 'PUT',
+    });
+}
+
+async function getStudySession(sessionId) {
+    return apiRequest(`/study/session/${sessionId}`);
+}
+
+function generateSessionId() {
+    return 'sess_' + Date.now() + '_' + Math.random().toString(36).substring(2, 15);
+}
+
+function generateRequestId() {
+    return 'req_' + Date.now() + '_' + Math.random().toString(36).substring(2, 10);
+}
+
+async function getWrongWords(params = {}) {
+    const searchParams = new URLSearchParams();
+    if (params.filter) searchParams.set('filter', params.filter);
+    if (params.search) searchParams.set('search', params.search);
+    if (params.limit) searchParams.set('limit', params.limit);
+    const query = searchParams.toString();
+    return apiRequest(`/wrong${query ? '?' + query : ''}`);
+}
+
+async function removeWrongWord(id) {
+    if (!Number.isInteger(id) || id < 1) {
+        throw new Error('Invalid wrong word ID');
+    }
+    return apiRequest(`/wrong/${id}`, {
+        method: 'DELETE',
+    });
+}
+
+async function reviewWrongWord(wordId, isCorrect, requestId) {
+    if (!Number.isInteger(wordId) || wordId < 1) {
+        throw new Error('Invalid word ID');
+    }
+    if (typeof isCorrect !== 'boolean') {
+        throw new Error('isCorrect must be a boolean');
+    }
+    if (!requestId || typeof requestId !== 'string') {
+        throw new Error('requestId is required');
+    }
+    return apiRequest('/wrong/review', {
+        method: 'POST',
+        body: JSON.stringify({ word_id: wordId, is_correct: isCorrect, request_id: requestId }),
+    });
+}
+
 function showMessage(elementId, message, type) {
     const element = document.getElementById(elementId);
     if (element) {
