@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study - Labelease</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">Labelease</div>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">Words</a>
+            <a href="study.html" class="nav-link active">Study</a>
+            <a href="progress.html" class="nav-link">Progress</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <section class="card study-card">
+            <h2>Flashcard Study</h2>
+
+            <div id="studySetup" class="study-setup">
+                <div class="form-group">
+                    <label for="studyLimit">Words per session</label>
+                    <select id="studyLimit" class="filter-select">
+                        <option value="5">5 words</option>
+                        <option value="10" selected>10 words</option>
+                        <option value="20">20 words</option>
+                    </select>
+                </div>
+                <button id="startStudyBtn" class="btn btn-primary">Start Study Session</button>
+            </div>
+
+            <div id="studyArea" class="study-area hidden">
+                <div class="flashcard-container">
+                    <div id="flashcard" class="flashcard">
+                        <div class="flashcard-front">
+                            <span class="card-label">Word</span>
+                            <h3 id="cardWord">-</h3>
+                            <button id="flipBtn" class="btn btn-secondary btn-sm">Show Definition</button>
+                        </div>
+                        <div class="flashcard-back">
+                            <span class="card-label">Definition</span>
+                            <p id="cardDefinition">-</p>
+                            <p id="cardExample" class="example-text">-</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="study-controls">
+                    <span id="studyProgress">1 / 10</span>
+                    <div class="study-buttons">
+                        <button id="markWrongBtn" class="btn btn-danger">Not Yet</button>
+                        <button id="markCorrectBtn" class="btn btn-success">Got It!</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="studyComplete" class="study-complete hidden">
+                <h3>Session Complete!</h3>
+                <div class="score-display">
+                    <p>You got <strong id="correctCount">0</strong> words correct</p>
+                </div>
+                <button id="restartStudyBtn" class="btn btn-primary">Study Again</button>
+            </div>
+
+            <div id="studyMessage" class="message"></div>
+        </section>
+    </main>
+
+    <script src="js/app.js"></script>
+    <script src="js/study.js"></script>
+</body>
+</html>

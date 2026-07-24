@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress - Labelease</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">Labelease</div>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">Words</a>
+            <a href="study.html" class="nav-link">Study</a>
+            <a href="progress.html" class="nav-link active">Progress</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <section class="card">
+            <h2>Your Progress</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalWords">0</div>
+                    <div class="stat-label">Total Words</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="masteredWords">0</div>
+                    <div class="stat-label">Mastered</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="remainingWords">0</div>
+                    <div class="stat-label">To Learn</div>
+                </div>
+            </div>
+
+            <div class="progress-section">
+                <div class="progress-header">
+                    <span>Overall Progress</span>
+                    <span id="progressPercent">0%</span>
+                </div>
+                <div class="progress-bar">
+                    <div id="progressFill" class="progress-fill" style="width: 0%"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>Achievements</h2>
+            <div class="achievements-list">
+                <div class="achievement" id="firstWord">
+                    <div class="achievement-icon">&#x1F4A1;</div>
+                    <div class="achievement-info">
+                        <div class="achievement-title">First Steps</div>
+                        <div class="achievement-desc">Add your first word</div>
+                    </div>
+                    <div class="achievement-status locked">Locked</div>
+                </div>
+                <div class="achievement" id="tenWords">
+                    <div class="achievement-icon">&#x1F4DA;</div>
+                    <div class="achievement-info">
+                        <div class="achievement-title">Bookworm</div>
+                        <div class="achievement-desc">Add 10 words</div>
+                    </div>
+                    <div class="achievement-status locked">Locked</div>
+                </div>
+                <div class="achievement" id="halfMastered">
+                    <div class="achievement-icon">&#x1F3C6;</div>
+                    <div class="achievement-info">
+                        <div class="achievement-title">Halfway There</div>
+                        <div class="achievement-desc">Master 50% of words</div>
+                    </div>
+                    <div class="achievement-status locked">Locked</div>
+                </div>
+                <div class="achievement" id="allMastered">
+                    <div class="achievement-icon">&#x1F3C5;</div>
+                    <div class="achievement-info">
+                        <div class="achievement-title">Vocabulary Master</div>
+                        <div class="achievement-desc">Master all words</div>
+                    </div>
+                    <div class="achievement-status locked">Locked</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/app.js"></script>
+    <script src="js/progress.js"></script>
+</body>
+</html>
