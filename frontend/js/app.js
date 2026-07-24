@@ -8,11 +8,33 @@ async function apiRequest(endpoint, options = {}) {
         },
     };
 
-    const response = await fetch(url, { ...defaultOptions, ...options });
-    const data = await response.json();
+    let response;
+    try {
+        response = await fetch(url, { ...defaultOptions, ...options });
+    } catch (networkErr) {
+        throw new Error('Network error. Please check your connection and try again.');
+    }
+
+    let data = null;
+    const contentType = response.headers.get('content-type') || '';
+    if (contentType.includes('application/json')) {
+        try {
+            data = await response.json();
+        } catch (parseErr) {
+            data = null;
+        }
+    } else {
+        try {
+            const text = await response.text();
+            data = text ? { error: text } : null;
+        } catch (e) {
+            data = null;
+        }
+    }
 
     if (!response.ok) {
-        throw new Error(data.error || 'Something went wrong');
+        const message = (data && data.error) ? data.error : `Request failed with status ${response.status}`;
+        throw new Error(message);
     }
 
     return data;
@@ -35,6 +57,18 @@ function escapeHtml(text) {
     return div.innerHTML;
 }
 
+function setButtonLoading(button, loading, loadingText) {
+    if (!button) return;
+    if (loading) {
+        button.dataset.originalText = button.textContent;
+        button.textContent = loadingText || 'Loading...';
+        button.disabled = true;
+    } else {
+        button.textContent = button.dataset.originalText || button.textContent;
+        button.disabled = false;
+    }
+}
+
 function createWordElement(word) {
     const div = document.createElement('div');
     div.className = `word-item ${word.mastered ? 'mastered' : ''}`;
@@ -51,17 +85,24 @@ function createWordElement(word) {
                 ${word.mastered ? 'Mastered' : 'Learning'}
             </span>
             <button class="btn btn-sm ${word.mastered ? 'btn-secondary' : 'btn-success'}"
-                    onclick="toggleMastery(${word.id}, ${word.mastered})">
+                    onclick="toggleMastery(${word.id}, ${word.mastered}, this)">
                 ${word.mastered ? 'Mark Unmastered' : 'Mark Mastered'}
             </button>
-            <button class="btn btn-sm btn-danger" onclick="deleteWord(${word.id})">Delete</button>
+            <button class="btn btn-sm btn-danger" onclick="deleteWord(${word.id}, this)">Delete</button>
         </div>
     `;
 
     return div;
 }
 
-async function toggleMastery(id, currentStatus) {
+async function toggleMastery(id, currentStatus, button) {
+    if (!id || !Number.isInteger(id) || id <= 0) {
+        showMessage('formMessage', 'Invalid word ID', 'error');
+        return;
+    }
+
+    setButtonLoading(button, true, '...');
+
     try {
         await apiRequest(`/words/${id}`, {
             method: 'PUT',
@@ -70,11 +111,19 @@ async function toggleMastery(id, currentStatus) {
         loadWords();
     } catch (error) {
         showMessage('formMessage', error.message, 'error');
+        setButtonLoading(button, false);
     }
 }
 
-async function deleteWord(id) {
+async function deleteWord(id, button) {
+    if (!id || !Number.isInteger(id) || id <= 0) {
+        showMessage('formMessage', 'Invalid word ID', 'error');
+        return;
+    }
+
     if (!confirm('Are you sure you want to delete this word?')) return;
+
+    setButtonLoading(button, true, '...');
 
     try {
         await apiRequest(`/words/${id}`, {
@@ -84,6 +133,7 @@ async function deleteWord(id) {
         showMessage('formMessage', 'Word deleted successfully', 'success');
     } catch (error) {
         showMessage('formMessage', error.message, 'error');
+        setButtonLoading(button, false);
     }
 }
 
@@ -140,6 +190,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
+            if (word.length > 255) {
+                showMessage('formMessage', 'Word must not exceed 255 characters', 'error');
+                return;
+            }
+
+            const submitBtn = addWordForm.querySelector('button[type="submit"]');
+            setButtonLoading(submitBtn, true, 'Adding...');
+
             try {
                 await apiRequest('/words', {
                     method: 'POST',
@@ -151,6 +209,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 loadWords();
             } catch (error) {
                 showMessage('formMessage', error.message, 'error');
+            } finally {
+                setButtonLoading(submitBtn, false);
             }
         });
     }
