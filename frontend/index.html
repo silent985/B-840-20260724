@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Labelease - Vocabulary Memorization</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">Labelease</div>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link active">Words</a>
+            <a href="study.html" class="nav-link">Study</a>
+            <a href="progress.html" class="nav-link">Progress</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <section class="card">
+            <h2>Add New Word</h2>
+            <form id="addWordForm" class="word-form">
+                <div class="form-group">
+                    <label for="word">Word</label>
+                    <input type="text" id="word" placeholder="Enter vocabulary word" required>
+                </div>
+                <div class="form-group">
+                    <label for="definition">Definition</label>
+                    <textarea id="definition" placeholder="Enter word definition" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="example">Example (optional)</label>
+                    <textarea id="example" placeholder="Enter an example sentence"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Add Word</button>
+            </form>
+            <div id="formMessage" class="message"></div>
+        </section>
+
+        <section class="card">
+            <h2>Vocabulary List</h2>
+            <div class="filter-bar">
+                <input type="text" id="searchInput" placeholder="Search words..." class="search-input">
+                <select id="filterSelect" class="filter-select">
+                    <option value="all">All Words</option>
+                    <option value="mastered">Mastered</option>
+                    <option value="unmastered">Not Mastered</option>
+                </select>
+            </div>
+            <div id="wordList" class="word-list">
+                <div class="loading">Loading words...</div>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
