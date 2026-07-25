@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wrong Words - Labelease</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">Labelease</div>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">Words</a>
+            <a href="study.html" class="nav-link">Study</a>
+            <a href="wrong.html" class="nav-link active">Wrong Words</a>
+            <a href="progress.html" class="nav-link">Progress</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <section class="card">
+            <h2>Wrong Words Review</h2>
+            <div class="filter-bar">
+                <input type="text" id="wrongSearchInput" placeholder="Search wrong words..." class="search-input">
+                <select id="wrongFilterSelect" class="filter-select">
+                    <option value="all">All Wrong Words</option>
+                    <option value="frequent">Frequently Wrong (3+ times)</option>
+                    <option value="recent">Recent (7 days)</option>
+                </select>
+                <button id="startReviewBtn" class="btn btn-primary">Start Review</button>
+            </div>
+            <div id="wrongWordList" class="word-list">
+                <div class="loading">Loading wrong words...</div>
+            </div>
+        </section>
+
+        <section id="reviewSection" class="card study-card hidden">
+            <h2>Review Mode</h2>
+            <div id="reviewArea" class="study-area">
+                <div class="flashcard-container">
+                    <div id="reviewFlashcard" class="flashcard">
+                        <div class="flashcard-front">
+                            <span class="card-label">Word</span>
+                            <h3 id="reviewCardWord">-</h3>
+                            <div class="wrong-count-badge" id="reviewWrongCount"></div>
+                            <button id="reviewFlipBtn" class="btn btn-secondary btn-sm">Show Definition</button>
+                        </div>
+                        <div class="flashcard-back">
+                            <span class="card-label">Definition</span>
+                            <p id="reviewCardDefinition">-</p>
+                            <p id="reviewCardExample" class="example-text">-</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="study-controls">
+                    <span id="reviewProgress">1 / 10</span>
+                    <div class="study-buttons">
+                        <button id="reviewStillWrongBtn" class="btn btn-danger">Still Wrong</button>
+                        <button id="reviewGotItBtn" class="btn btn-success">Got It!</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="reviewComplete" class="study-complete hidden">
+                <h3>Review Complete!</h3>
+                <div class="score-display">
+                    <p>You got <strong id="reviewCorrectCount">0</strong> words correct</p>
+                    <p id="reviewRemovedText"></p>
+                </div>
+                <button id="backToListBtn" class="btn btn-primary">Back to List</button>
+            </div>
+        </section>
+
+        <div id="wrongMessage" class="message"></div>
+    </main>
+
+    <script src="js/app.js"></script>
+    <script src="js/wrong.js"></script>
+</body>
+</html>

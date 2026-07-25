@@ -12,13 +12,14 @@
         <div class="nav-links">
             <a href="index.html" class="nav-link">Words</a>
             <a href="study.html" class="nav-link">Study</a>
+            <a href="wrong.html" class="nav-link">Wrong Words</a>
             <a href="progress.html" class="nav-link active">Progress</a>
         </div>
     </nav>
 
     <main class="container">
         <section class="card">
-            <h2>Your Progress</h2>
+            <h2>Vocabulary Progress</h2>
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-number" id="totalWords">0</div>
@@ -42,6 +43,31 @@
                 <div class="progress-bar">
                     <div id="progressFill" class="progress-fill" style="width: 0%"></div>
                 </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>Learning Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalSessions">0</div>
+                    <div class="stat-label">Study Sessions</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="accuracyRate">0%</div>
+                    <div class="stat-label">Accuracy</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="wrongCount">0</div>
+                    <div class="stat-label">Wrong Words</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>Last 7 Days Trend</h2>
+            <div id="trendChart" class="trend-chart">
+                <div class="loading">Loading trend data...</div>
             </div>
         </section>
 
@@ -77,6 +103,22 @@
                     <div class="achievement-info">
                         <div class="achievement-title">Vocabulary Master</div>
                         <div class="achievement-desc">Master all words</div>
+                    </div>
+                    <div class="achievement-status locked">Locked</div>
+                </div>
+                <div class="achievement" id="firstSession">
+                    <div class="achievement-icon">&#x1F4DD;</div>
+                    <div class="achievement-info">
+                        <div class="achievement-title">First Study</div>
+                        <div class="achievement-desc">Complete your first study session</div>
+                    </div>
+                    <div class="achievement-status locked">Locked</div>
+                </div>
+                <div class="achievement" id="perfectAccuracy">
+                    <div class="achievement-icon">&#x1F3AF;</div>
+                    <div class="achievement-info">
+                        <div class="achievement-title">Sharp Shooter</div>
+                        <div class="achievement-desc">Achieve 90%+ accuracy</div>
                     </div>
                     <div class="achievement-status locked">Locked</div>
                 </div>
