@@ -12,7 +12,11 @@ async function apiRequest(endpoint, options = {}) {
     const data = await response.json();
 
     if (!response.ok) {
-        throw new Error(data.error || 'Something went wrong');
+        // 保留状态码与响应体，供调用方处理 409 等特定场景
+        const error = new Error(data.error || 'Something went wrong');
+        error.status = response.status;
+        error.data = data;
+        throw error;
     }
 
     return data;
@@ -27,6 +31,29 @@ function showMessage(elementId, message, type) {
             element.classList.remove('show');
         }, 3000);
     }
+}
+
+// 公共二次确认逻辑，统一各页面的破坏性操作提示
+function confirmAction(message) {
+    return window.confirm(message);
+}
+
+// 列表容器的公共状态渲染：加载中 / 空数据 / 错误，统一样式与转义，
+// 避免各页面各自拼装状态 DOM。type 取值：'loading' | 'empty' | 'error'。
+function showListState(elementId, message, type = 'loading') {
+    const element = document.getElementById(elementId);
+    if (!element) return;
+
+    const className = type === 'error' ? 'message error show' : 'loading';
+    element.innerHTML = `<div class="${className}">${escapeHtml(message)}</div>`;
+}
+
+// 生成幂等令牌，供带重试的写操作在前端稳定复用
+function generateToken() {
+    if (window.crypto && typeof window.crypto.randomUUID === 'function') {
+        return window.crypto.randomUUID();
+    }
+    return `${Date.now()}-${Math.random().toString(36).slice(2)}`;
 }
 
 function escapeHtml(text) {
@@ -74,7 +101,7 @@ async function toggleMastery(id, currentStatus) {
 }
 
 async function deleteWord(id) {
-    if (!confirm('Are you sure you want to delete this word?')) return;
+    if (!confirmAction('Are you sure you want to delete this word?')) return;
 
     try {
         await apiRequest(`/words/${id}`, {

@@ -14,5 +14,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $words = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    // 明确类型契约：PDO 默认将整数列返回为字符串，这里将 id 转为整数，
+    // 保证前端拿到的 word.id 始终是数字类型。
+    $words = array_map(function ($word) {
+        $word['id'] = (int)$word['id'];
+        return $word;
+    }, $words);
+
     echo json_encode($words);
 }
