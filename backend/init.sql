@@ -21,3 +21,25 @@ INSERT INTO words (word, definition, example) VALUES
 ('hierarchy', 'a system in which people are ranked', 'The corporate hierarchy was clearly defined.'),
 ('integral', 'necessary to make a whole complete', 'Teamwork is integral to our success.'),
 ('juxtapose', 'to place close together for contrasting effect', 'The artist juxtaposed light and dark colors.');
+
+CREATE TABLE IF NOT EXISTS study_records (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    request_id VARCHAR(64) NOT NULL,
+    word_id INT NOT NULL,
+    word_snapshot VARCHAR(255) NOT NULL,
+    is_correct TINYINT(1) NOT NULL,
+    studied_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY uniq_request (request_id),
+    INDEX idx_studied_at (studied_at),
+    INDEX idx_word_id (word_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS wrong_words (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    word_id INT NOT NULL,
+    review_count INT DEFAULT 0,
+    added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    last_reviewed_at TIMESTAMP NULL DEFAULT NULL,
+    FOREIGN KEY (word_id) REFERENCES words(id) ON DELETE CASCADE,
+    UNIQUE KEY uniq_word (word_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

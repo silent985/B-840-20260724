@@ -26,6 +26,9 @@
 - [x] F2：添加新单词（带词义和例 API POST句表单）- /api/words
 - [x] F3：学习模式（闪卡式学习）- 随机抽取学习，支持翻转
 - [x] F4：进度追踪（统计和成就系统）- 展示学习进度百分比
+- [x] F5：学习记录 - 每次答题记录单词、对错和时间
+- [x] F6：错词本 - 答错单词自动入集，支持搜索、复习和移除
+- [x] F7：进度统计增强 - 累计学习次数、正确率、最近7天趋势图
 
 ## 🔎 自测说明
 ### 成功路径
@@ -65,21 +68,24 @@ labelease/
 ├── backend/
 │   ├── Dockerfile          # PHP 8.2 CLI 镜像
 │   ├── index.php           # 主入口 + 数据库连接 + 路由分发
-│   ├── init.sql            # 数据库初始化（10个预置单词）
+│   ├── init.sql            # 数据库初始化（words / study_records / wrong_words 表）
 │   └── routes/
 │       ├── words.php       # 单词 CRUD API (GET/POST/DELETE/PUT)
-│       ├── progress.php    # 进度统计 API
-│       └── study.php       # 学习模式 API (随机抽取)
+│       ├── progress.php    # 进度统计 API（含7天趋势）
+│       ├── study.php       # 学习模式 API + 答题记录上报 + 错词复习抽取
+│       └── wrong-words.php # 错词本 API（列表/搜索/移除）
 ├── frontend/
 │   ├── index.html          # 单词列表页面
-│   ├── study.html          # 学习页面（闪卡）
-│   ├── progress.html       # 进度页面（统计+成就）
+│   ├── study.html          # 学习页面（闪卡，支持错词复习模式）
+│   ├── wrong-words.html    # 错词本页面（搜索/复习/移除）
+│   ├── progress.html       # 进度页面（统计+趋势+成就）
 │   ├── nginx.conf          # Nginx 配置（API 反向代理）
-│   ├── css/style.css       # 完整样式（卡片、动画、响应式）
+│   ├── css/style.css       # 完整样式（卡片、动画、响应式、趋势图）
 │   └── js/
-│       ├── app.js          # 公共逻辑（API 请求、Toast、CRUD）
-│       ├── study.js        # 学习页面逻辑（闪卡翻转、评分）
-│       └── progress.js     # 进度页面逻辑（成就解锁）
+│       ├── app.js          # 公共逻辑（API 请求、提示、按钮状态、CRUD）
+│       ├── study.js        # 学习页面逻辑（闪卡翻转、评分、记录上报）
+│       ├── wrong-words.js  # 错词本页面逻辑
+│       └── progress.js     # 进度页面逻辑（趋势图、成就解锁）
 ├── mysql/                  # MySQL 数据持久化卷
 └── evidence/               # 证据截图
 ```
@@ -93,8 +99,12 @@ labelease/
 | /api/words | POST | 添加新单词 |
 | /api/words/{id} | PUT | 更新单词掌握状态 |
 | /api/words/{id} | DELETE | 删除单词 |
-| /api/progress | GET | 获取学习进度统计 |
+| /api/progress | GET | 获取学习进度统计（含趋势数据） |
 | /api/study | GET | 随机获取待学习单词 |
+| /api/study/wrong-words | GET | 随机获取错词用于复习 |
+| /api/study/records | POST | 提交一次答题记录 |
+| /api/wrong-words | GET | 获取错词列表（支持搜索） |
+| /api/wrong-words/{id} | DELETE | 从错词本移除单词 |
 
 ### 前端特性
 - **响应式设计**：支持移动端和桌面端

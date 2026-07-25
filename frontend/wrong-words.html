@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wrong Words - Labelease</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">Labelease</div>
+        <div class="nav-links">
+            <a href="index.html" class="nav-link">Words</a>
+            <a href="study.html" class="nav-link">Study</a>
+            <a href="wrong-words.html" class="nav-link active">Wrong Words</a>
+            <a href="progress.html" class="nav-link">Progress</a>
+        </div>
+    </nav>
+
+    <main class="container">
+        <section class="card">
+            <h2>Wrong Words Review</h2>
+            <p class="section-desc">Words you answered wrong during study. Review them or remove from this list.</p>
+
+            <div class="wrong-words-actions">
+                <button id="reviewBtn" class="btn btn-primary">Start Review</button>
+            </div>
+
+            <div class="filter-bar">
+                <input type="text" id="wrongSearchInput" placeholder="Search wrong words..." class="search-input" maxlength="255">
+            </div>
+
+            <div id="wrongWordsList" class="word-list">
+                <div class="loading">Loading wrong words...</div>
+            </div>
+
+            <div id="wrongWordsMessage" class="message"></div>
+        </section>
+    </main>
+
+    <script src="js/app.js"></script>
+    <script src="js/wrong-words.js"></script>
+</body>
+</html>
